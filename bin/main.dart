@@ -46,6 +46,7 @@ main(List<String> arguments) async {
 
     var response = await http.get(url);
     request.response.statusCode = response.statusCode;
+    request.response.headers.add("Access-Control-Allow-Origin", "*");
     request.response.headers.contentType =
         ContentType.parse(response.headers['content-type']);
     request.response.write(response.body);

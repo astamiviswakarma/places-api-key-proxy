@@ -29,6 +29,7 @@ main(List<String> arguments) async {
   var parser = new ArgParser();
   parser.addOption('key', abbr: 'k', help: 'Places API Key');
   parser.addOption('port', abbr: 'p', help: 'Port to bind to');
+  parser.addOption('origin', abbr: 'o', help: 'Cross origin allowed to');
   var flags = parser.parse(arguments);
   validateParameters(parser, flags);
 
@@ -46,7 +47,7 @@ main(List<String> arguments) async {
 
     var response = await http.get(url);
     request.response.statusCode = response.statusCode;
-    request.response.headers.add("Access-Control-Allow-Origin", "*");
+    request.response.headers.add("Access-Control-Allow-Origin", flags['origin']);
     request.response.headers.contentType =
         ContentType.parse(response.headers['content-type']);
     request.response.write(response.body);
@@ -65,6 +66,11 @@ validateParameters(ArgParser parser, ArgResults results) {
   if (results['port'] == null) {
     usageAndExit(parser, 'Missing port parameter');
   }
+
+  if (results['origin'] == null) {
+    usageAndExit(parser, 'Missing cross origin parameter');
+  }
+
   int.parse(results['port'], onError: (source) {
     usageAndExit(parser, 'Invalid port parameter: $source');
   });

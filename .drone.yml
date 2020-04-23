@@ -1,0 +1,21 @@
+kind: pipeline
+name: default
+
+steps:
+- name: docker
+  image: plugins/docker
+  settings:
+    repo: astamia/places-api-proxy
+    context: build/docker
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    tags:
+      - latest
+      - tag-${DRONE_COMMIT_SHA:0:7}
+  when:
+    branch: ['master']
+    event:
+      exclude:
+        - pull_request

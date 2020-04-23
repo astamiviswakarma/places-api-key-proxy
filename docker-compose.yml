@@ -1,0 +1,9 @@
+version: '3.1'
+
+services:
+  proxy-api:
+    build: .
+    environment:
+      API_KEY: AIza_googleDemoKeyShouldBeReplaced
+    ports:
+      - 8000:8088
